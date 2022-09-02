@@ -1,22 +1,33 @@
+use io::output::{ConsoleOutput, Output};
+use math::vec3::{Color, Vec3};
+
+pub mod io;
+pub mod math;
+
 pub const IMAGE_WIDTH: i32 = 256;
 pub const IMAGE_HEIGHT: i32 = 256;
+
 fn main() {
-    println!("P3 {0} {1}\n255", IMAGE_WIDTH, IMAGE_HEIGHT);
+    ConsoleOutput::write(generate_image().iter());
+}
 
-    for j in 0..=(IMAGE_HEIGHT - 1) {
-        for i in 0..IMAGE_WIDTH {
-            let j = IMAGE_HEIGHT - j;
-            let r = i as f32 / ((IMAGE_WIDTH as f32) - 1.0);
-            let g = j as f32 / ((IMAGE_HEIGHT as f32) - 1.0);
-            let b = 0.25;
-
-            let ir: i32 = (255.999 * r) as i32;
-            let ig: i32 = (255.999 * g) as i32;
-            let ib: i32 = (255.999 * b) as i32;
-
-            println!("{0} {1} {2}", ir, ig, ib);
-        }
-    }
+fn generate_image<'a>() -> Vec<Vec3> {
+    (0..=(IMAGE_HEIGHT - 1))
+        .map(|j| {
+            (0..IMAGE_WIDTH)
+                .map(|i| {
+                    Color::new(
+                        (i as f32) / (IMAGE_WIDTH - 1) as f32,
+                        (IMAGE_HEIGHT - j) as f32 / (IMAGE_HEIGHT - 1) as f32,
+                        0.25,
+                    )
+                    .unit_vec()
+                    .mul(255.99)
+                })
+                .collect::<Vec<Vec3>>()
+        })
+        .flatten()
+        .collect::<Vec<Vec3>>()
 }
 
 // fn main() {

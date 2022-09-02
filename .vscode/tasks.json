@@ -1,0 +1,24 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "shell",
+            "label": "grcov",
+            "dependsOn": [
+                "tests"
+            ],
+            "command": "grcov . --binary-path ./target/debug/deps/ -s . -t lcov --branch --ignore-not-existing --ignore '../*' --ignore \"/*\" -o target/coverage/tests.lcov",
+            "problemMatcher": [
+                "$rustc"
+            ]
+        },
+        {
+            "label": "tests",
+            "type": "shell",
+            "command": "${workspaceFolder}/.vscode/run_test_win.sh",
+            "linux": "./.vscode/run_test.sh",
+            "windows": "./.vscode/run_test_win.sh",
+            "args": []
+        }
+    ]
+}
