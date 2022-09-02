@@ -1,6 +1,4 @@
-use std::{
-    ops::{Add, Mul, Neg, Sub},
-};
+use std::ops::{Add, Mul, Neg, Sub};
 
 pub type Point3 = Vec3;
 pub type Color = Vec3;
@@ -12,6 +10,15 @@ pub struct Vec3 {
     pub z: f32,
 }
 
+impl Color {
+    pub fn write_color(&self) -> String {
+        (self.x as i32).to_string()
+            + " "
+            + &(self.y as i32).to_string()
+            + " "
+            + &(self.z as i32).to_string()
+    }
+}
 impl Vec3 {
     pub fn new(x: f32, y: f32, z: f32) -> Vec3 {
         Vec3 { x, y, z }
@@ -50,14 +57,6 @@ impl Vec3 {
 
     pub fn unit_vec(&self) -> Self {
         self.div(self.length())
-    }
-
-    pub fn to_whole_number_string(&self) -> String {
-        (self.x as i32).to_string()
-            + " "
-            + &(self.y as i32).to_string()
-            + " "
-            + &(self.z as i32).to_string()
     }
 }
 impl Neg for Vec3 {
