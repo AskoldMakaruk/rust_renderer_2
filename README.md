@@ -1,5 +1,8 @@
 # History
 
+## surface normals
+![surface normals](history_images/surface_normals.png)
+
 ## shpere
 ![sphere](history_images/shpere.png)
 

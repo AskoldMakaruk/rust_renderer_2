@@ -21,6 +21,7 @@ impl Color {
 }
 impl Vec3 {
     pub const ZERO: Vec3 = Vec3::new(0.0, 0.0, 0.0);
+    pub const ONE: Vec3 = Vec3::new(1.0, 1.0, 1.0);
 
     pub const fn new(x: f32, y: f32, z: f32) -> Vec3 {
         Vec3 { x, y, z }
