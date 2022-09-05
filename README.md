@@ -1,5 +1,9 @@
 # History
 
+## shpere
+![sphere](history_images/shpere.png)
+
+
 ## render blue gradient with rays and camera
 ![rendered gradient](history_images/blue_gradient.png)
 

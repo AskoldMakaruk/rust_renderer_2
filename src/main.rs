@@ -19,12 +19,25 @@ pub const VIEWPORT_WIDTH: f32 = ASPECT_RATIO * VIEWPORT_HEIGHT;
 pub const FOCAL_LENGHT: f32 = 1.0;
 
 fn ray_color(r: &Ray) -> Color {
+    if hit_sphere(&Point::new(0.0, 0., -1.), 0.5, r) {
+        return Color::new(1., 0., 0.);
+    }
+
     let unit_dir = r.direction.unit_vec();
 
     let t = 0.5 * (unit_dir.y + 1.0);
     Color::new(1.0, 1.0, 1.0)
         .mul(1.0 - t)
         .add(Color::new(0.5, 0.7, 1.0).mul(t))
+}
+
+fn hit_sphere(center: &Point, radius: f32, r: &Ray) -> bool {
+    let oc: Vec3 = r.orig - *center;
+    let a = r.direction.dot(&r.direction);
+    let b = 2.0 * oc.dot(&r.direction);
+    let c = oc.dot(&oc) - radius * radius;
+    let discriminant = b * b - 4.0 * a * c;
+    discriminant > 0.
 }
 
 fn main() {

@@ -26,7 +26,7 @@ impl Vec3 {
         Vec3 { x, y, z }
     }
 
-    pub fn dot(self, other: Self) -> f32 {
+    pub fn dot(&self, other: &Self) -> f32 {
         self.x * other.x + self.y * other.y + self.z * other.z
     }
 
@@ -121,13 +121,13 @@ mod tests {
         let vec1 = Vec3::new(1.0, 3.0, -5.0);
         let vec2 = Vec3::new(4.0, -2.0, -1.0);
 
-        assert_eq!(vec1.dot(vec2), 3.0);
+        assert_eq!(vec1.dot(&vec2), 3.0);
     }
     #[test]
     fn vec3_dot_self() {
         let vec1 = Vec3::new(1.0, 3.0, -5.0);
 
-        assert_eq!(vec1.clone().dot(vec1), 35.0);
+        assert_eq!(vec1.clone().dot(&vec1), 35.0);
     }
 
     #[test]
