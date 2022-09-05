@@ -16,7 +16,7 @@ impl Output for ConsoleOutput {
     {
         println!("P3 {0} {1}\n255", crate::IMAGE_WIDTH, crate::IMAGE_HEIGHT);
         for color in it {
-            println!("{}", color.write_color());
+            println!("{}", color.mul(255.99).write_color());
         }
     }
 }

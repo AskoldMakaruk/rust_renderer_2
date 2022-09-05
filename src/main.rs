@@ -1,28 +1,56 @@
+use std::ops::Add;
+
 use io::output::{ConsoleOutput, Output};
-use math::vec3::{Color, Vec3};
+use math::{
+    ray::Ray,
+    vec3::{Color, Point, Vec3},
+};
 
 pub mod io;
 pub mod math;
 
-pub const IMAGE_WIDTH: i32 = 256;
-pub const IMAGE_HEIGHT: i32 = 256;
+pub const ASPECT_RATIO: f32 = 16.0 / 9.0;
+
+pub const IMAGE_WIDTH: i32 = 400;
+pub const IMAGE_HEIGHT: i32 = (IMAGE_WIDTH as f32 / ASPECT_RATIO) as i32;
+
+pub const VIEWPORT_HEIGHT: f32 = 2.0;
+pub const VIEWPORT_WIDTH: f32 = ASPECT_RATIO * VIEWPORT_HEIGHT;
+pub const FOCAL_LENGHT: f32 = 1.0;
+
+fn ray_color(r: &Ray) -> Color {
+    let unit_dir = r.direction.unit_vec();
+
+    let t = 0.5 * (unit_dir.y + 1.0);
+    Color::new(1.0, 1.0, 1.0)
+        .mul(1.0 - t)
+        .add(Color::new(0.5, 0.7, 1.0).mul(t))
+}
 
 fn main() {
     ConsoleOutput::write(generate_image().iter());
 }
 
 fn generate_image<'a>() -> Vec<Vec3> {
+    let origin = Point::new(0.0, 0.0, 0.0);
+    let horizontal = Vec3::new(VIEWPORT_WIDTH, 0.0, 0.0);
+    let vertical = Vec3::new(0.0, VIEWPORT_HEIGHT, 0.0);
+    let lower_left_corner =
+        origin - horizontal.div(2.0) - vertical.div(2.0) - Vec3::new(0.0, 0.0, FOCAL_LENGHT as f32);
+
     (0..=(IMAGE_HEIGHT - 1))
         .map(|j| {
             (0..IMAGE_WIDTH)
                 .map(|i| {
-                    Color::new(
-                        (i as f32) / (IMAGE_WIDTH - 1) as f32,
-                        (IMAGE_HEIGHT - j) as f32 / (IMAGE_HEIGHT - 1) as f32,
-                        0.25,
-                    )
-                    .unit_vec()
-                    .mul(255.99)
+                    let u = i as f32 / (IMAGE_WIDTH as f32 - 1.0);
+                    let v = j as f32 / (IMAGE_HEIGHT as f32 - 1.0);
+                    let r: Ray = Ray {
+                        orig: origin,
+                        direction: lower_left_corner + horizontal.mul(u) + vertical.mul(v) - origin,
+                    };
+                    let color = ray_color(&r);
+
+                    color
                 })
                 .collect::<Vec<Vec3>>()
         })

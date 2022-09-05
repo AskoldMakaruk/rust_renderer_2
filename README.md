@@ -1,5 +1,8 @@
 # History
 
+## render blue gradient with rays and camera
+![rendered gradient](history_images/blue_gradient.png)
+
 ## render with color vectors
 ![rendered gradient](history_images/RTiOW_output_file_with_color_vectors.png)
 
